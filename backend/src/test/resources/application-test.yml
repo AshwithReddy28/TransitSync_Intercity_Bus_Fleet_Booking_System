@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: transitsync-backend-test
+  datasource:
+    url: jdbc:h2:mem:transitsynctest;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  flyway:
+    enabled: false
+
+server:
+  port: 0
+
+jwt:
+  secret: 4c65637572655472616e73697453796e633230323653757065725365637265744b65793132333435
+  expiration: 3600000
+
+admin:
+  bootstrap:
+    enabled: true
+    email: testadmin@transitsync.com
+    password: AdminPassword123!
+    name: Test Admin
