@@ -22,8 +22,13 @@ public class AuthController {
 
     @PostMapping("/customer/register")
     @Operation(summary = "Register a new customer")
-    public ResponseEntity<AuthResponse> registerCustomer(@Valid @RequestBody RegisterRequest request) {
-        return new ResponseEntity<>(authService.registerCustomer(request), HttpStatus.CREATED);
+    public ResponseEntity<?> registerCustomer(@Valid @RequestBody RegisterRequest request) {
+        try {
+            return new ResponseEntity<>(authService.registerCustomer(request), HttpStatus.CREATED);
+        } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger(AuthController.class).error("CRITICAL REGISTER ERROR: ", e);
+            throw e;
+        }
     }
 
     @PostMapping("/customer/login")
