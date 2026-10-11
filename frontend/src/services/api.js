@@ -1,16 +1,21 @@
 import axios from 'axios';
 
-const getDefaultBackendUrl = () => {
-  if (typeof window !== 'undefined' && window.location.hostname && window.location.hostname !== 'localhost') {
-    return `${window.location.protocol}//${window.location.hostname}:8080`;
+const getDefaultBaseUrl = () => {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
   }
-  return 'http://localhost:8080';
+  if (typeof window !== 'undefined') {
+    // If accessed from mobile or custom hostname on LAN
+    if (window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && !window.location.hostname.endsWith('vercel.app')) {
+      return `${window.location.protocol}//${window.location.hostname}:8080/api/v1`;
+    }
+  }
+  // On localhost, use relative path so Vite proxy (or same-origin) routes to 8080
+  return '/api/v1';
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || getDefaultBackendUrl();
-
 const api = axios.create({
-  baseURL: `${API_BASE_URL}/api/v1`,
+  baseURL: getDefaultBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },

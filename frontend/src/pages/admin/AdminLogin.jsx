@@ -21,7 +21,11 @@ export default function AdminLogin() {
       await loginAdmin(email, password);
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Admin authentication failed. Customer accounts cannot access the admin portal.');
+      if (!err.response) {
+        setError('Cannot connect to backend server. Please verify the Spring Boot backend is running and CORS/VITE_API_BASE_URL is configured.');
+      } else {
+        setError(err.response.data?.message || 'Admin authentication failed. Customer accounts cannot access the admin portal.');
+      }
     } finally {
       setLoading(false);
     }
@@ -74,8 +78,8 @@ export default function AdminLogin() {
           }}>
             <ShieldCheck size={32} />
           </div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#f8fafc' }}>
-            TransitSync Admin
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#f8fafc', letterSpacing: '0.5px' }}>
+            SAFAR Admin
           </h2>
           <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginTop: '0.25rem' }}>
             Fleet & Operations Management Portal
